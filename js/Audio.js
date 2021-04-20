@@ -13,6 +13,7 @@ import {
 
 class AudioView extends Component {
 
+    //初期設定
     state = {
         currentTime: 0.0,
         recording: false,
@@ -23,6 +24,7 @@ class AudioView extends Component {
         hasPermission: undefined,
     };
 
+    //録音後のオーディオファイルの保存場所
     prepareRecordingPath(audioPath) {
         AudioRecorder.prepareRecordingAtPath(audioPath, {
             SampleRate: 22050,
@@ -33,6 +35,7 @@ class AudioView extends Component {
         });
     }
 
+    //画面最初入る時、このメソッド実行
     componentDidMount() {
         AudioRecorder.requestAuthorization().then((isAuthorised) => {
             this.setState({ hasPermission: isAuthorised });
@@ -53,9 +56,9 @@ class AudioView extends Component {
         });
     }
 
+    //renderButtonの設定
     _renderButton(title, onPress, active) {
         var style = (active) ? styles.activeButtonText : styles.buttonText;
-
         return (
             <TouchableHighlight style={styles.button} onPress={onPress}>
                 <Text style={style}>
@@ -65,6 +68,7 @@ class AudioView extends Component {
         );
     }
 
+    //pauseボタンクリック後、このメソッド実行
     _renderPauseButton(onPress, active) {
         var style = (active) ? styles.activeButtonText : styles.buttonText;
         var title = this.state.paused ? "再開" : "pause";
@@ -76,7 +80,6 @@ class AudioView extends Component {
             </TouchableHighlight>
         );
     }
-
     async _pause() {
         if (!this.state.recording) {
             console.warn('pauseできない,記録しない');
@@ -91,6 +94,7 @@ class AudioView extends Component {
         }
     }
 
+    //再開ボタンクリック後、このメソッド実行
     async _resume() {
         if (!this.state.paused) {
             console.warn('再開できない, pausedしない');
@@ -104,7 +108,7 @@ class AudioView extends Component {
             console.error(error);
         }
     }
-
+    //ストップボタンクリック後、このメソッド実行
     async _stop() {
         if (!this.state.recording) {
             console.warn('ストップできない, 記録しない');
@@ -125,6 +129,7 @@ class AudioView extends Component {
         }
     }
 
+    //開始ボタンクリック後、このメソッド実行
     async _play() {
         if (this.state.recording) {
             await this._stop();
@@ -148,6 +153,7 @@ class AudioView extends Component {
         }, 100);
     }
 
+    //記録ボタンクリック後、このメソッド実行
     async _record() {
         if (this.state.recording) {
             console.warn('記録完了');
@@ -174,7 +180,6 @@ class AudioView extends Component {
 
     _finishRecording(didSucceed, filePath, fileSize) {
         this.setState({ finished: didSucceed });
-        console.log(`Finished recording of duration ${this.state.currentTime} seconds at path: ${filePath} and size of ${fileSize || 0} bytes`);
     }
 
     render() {
@@ -184,7 +189,6 @@ class AudioView extends Component {
                     {this._renderButton("記録", () => { this._record() }, this.state.recording)}
                     {this._renderButton("開始", () => { this._play() })}
                     {this._renderButton("ストップ", () => { this._stop() })}
-                    {/* {this._renderButton("PAUSE", () => { this._pause() })} */}
                     {this._renderPauseButton(() => { this.state.paused ? this._resume() : this._pause() })}
                     <Text style={styles.progressText}>{this.state.currentTime}s</Text>
                 </View>
@@ -193,7 +197,8 @@ class AudioView extends Component {
     }
 }
 
-var styles = StyleSheet.create({
+//stylesの設定
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#2b608a",

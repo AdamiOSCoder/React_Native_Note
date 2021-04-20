@@ -32,7 +32,7 @@ function ListItem({ content, color, time, onPress, idx, thisz }) {
         </View>
     )
 }
-
+//stylesの設定
 const styles = StyleSheet.create({
     wrapper: {
         height: Pxwh(150),

@@ -21,9 +21,9 @@ function App() {
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="List" component={ListView} />
+          <Stack.Screen name="List" component={ListView} options={{ title: "情報" }} />
           <Stack.Screen name="Detail" component={DetailsView} />
-          <Stack.Screen name="Audio" component={AudioView} />
+          <Stack.Screen name="Audio" component={AudioView} options={{ title: "録音" }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

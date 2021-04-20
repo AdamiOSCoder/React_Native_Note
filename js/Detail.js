@@ -21,6 +21,7 @@ export default class DetailsView extends React.Component {
     }
     render() {
         const { navigation } = this.props;
+        //navigationのヘッド設定
         navigation.setOptions({
             title: "詳細",
             headerRight: () => (
@@ -28,6 +29,8 @@ export default class DetailsView extends React.Component {
                 </Button >
             )
         })
+
+        //保存ボタンクリック後、このメソッド実行
         const saveBtnClick = () => {
             if (this.props.route.params.stas === "create") {
                 this.props.route.params.createTag("create");
@@ -47,7 +50,7 @@ export default class DetailsView extends React.Component {
                     this._setMessage(this.state.msgText)
                 }
             }
-
+            //前の画面に戻る
             navigation.goBack();
         }
 
@@ -67,6 +70,7 @@ export default class DetailsView extends React.Component {
         );
     }
 
+    //入力した情報を保存する
     _setMessage(objMsg) {
         AsyncStorage.setItem('content', objMsg, (error) => {
             if (error) {
@@ -77,6 +81,7 @@ export default class DetailsView extends React.Component {
     }
 }
 
+//stylesの設定
 const styles = StyleSheet.create({
     textInputStyle: {
         marginLeft: 10,

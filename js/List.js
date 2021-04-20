@@ -14,6 +14,7 @@ import {
     Dimensions
 } from "react-native";
 
+//テストデータ
 const data = [
     {
         content: 'テスト１',
@@ -23,6 +24,7 @@ const data = [
     },
 ];
 
+//色値
 const colorSet = ['#def2ff', '#bfeabe', '#f2d8c6', '#f0efb0', '#f0abb0', '#fccbb0', '#f8abb0', '#f99bb0', '#f8a990', '#f888b0'];
 export default class ListView extends Component {
     constructor(props) {
@@ -34,19 +36,21 @@ export default class ListView extends Component {
         }
     }
 
+    //この画面入る時、このメソッド実行
     componentDidMount() {
+        //listenerの設定
         this.listener = DeviceEventEmitter.addListener('notic', (message) => {
             this._getMsg();
         })
     }
 
     componentWillUnmount() {
-        //移除监听
+        //消除listener
         if (this.listener) {
             this.listener.remove();
         }
     }
-
+    //保存された情報を取得
     _getMsg() {
         AsyncStorage.getItem('content', (error, result) => {
             if (error) {
@@ -72,6 +76,7 @@ export default class ListView extends Component {
             }
         });
     }
+
     render() {
         const renderItem = ({ item, index }) => (
             <ListItem content={item.content}
@@ -90,6 +95,7 @@ export default class ListView extends Component {
             />
         );
 
+        //FlatListの行クリックした後、このメソッドを実行
         const listRowClick = () => {
             this.props.navigation.navigate('Detail', {
                 "stas": "create", createTag: (createTag) => {
@@ -122,7 +128,7 @@ export default class ListView extends Component {
     }
 }
 
-
+//stylesの設定
 const styles = StyleSheet.create({
     flatView: {
         flex: 1
