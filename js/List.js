@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { color } from 'react-native-reanimated';
+import ListItem from './component/ListItem';
 import {
     TouchableOpacity,
     View,
@@ -11,8 +13,6 @@ import {
     DeviceEventEmitter,
     Dimensions
 } from "react-native";
-import { color } from 'react-native-reanimated';
-import ListItem from './component/ListItem';
 
 const data = [
     {
@@ -23,8 +23,7 @@ const data = [
     },
 ];
 
-const colorSet = ['#def2ff', '#bfeabe', '#f2d8c6', '#f0efb0'];
-
+const colorSet = ['#def2ff', '#bfeabe', '#f2d8c6', '#f0efb0', '#f0abb0', '#fccbb0', '#f8abb0', '#f99bb0', '#f8a990', '#f888b0'];
 export default class ListView extends Component {
     constructor(props) {
         super(props)
@@ -37,7 +36,6 @@ export default class ListView extends Component {
 
     componentDidMount() {
         this.listener = DeviceEventEmitter.addListener('notic', (message) => {
-            //收到监听后想做的事情
             this._getMsg();
         })
     }
@@ -49,11 +47,10 @@ export default class ListView extends Component {
         }
     }
 
-    //取信息
     _getMsg() {
         AsyncStorage.getItem('content', (error, result) => {
             if (error) {
-
+                alert(error);
             } else {
                 const tempArray = this.state.updateTag;
                 const crtTag = this.state.createTag;
@@ -75,41 +72,43 @@ export default class ListView extends Component {
             }
         });
     }
-
     render() {
+        const renderItem = ({ item, index }) => (
+            <ListItem content={item.content}
+                color={colorSet[index]}
+                time={item.time || ''}
+                idx={index}
+                thisz={this}
+                onPress={() => {
+                    this.props.navigation.navigate('Detail', {
+                        "content": item.content, idx: index, "stas": "update", updateTag: (updateTag) => {
+                            this.setState({ updateTag: updateTag });
+                        }
+                    })
+                }
+                }
+            />
+        );
+
+        const listRowClick = () => {
+            this.props.navigation.navigate('Detail', {
+                "stas": "create", createTag: (createTag) => {
+                    this.setState({ createTag: createTag })
+                }
+            })
+        }
+
         return (
-            <>
+            <View style={{ flex: 1 }}>
                 <View style={styles.flatView}>
                     <FlatList
                         data={this.state.data}
-                        renderItem={({ item, index }) => (
-                            <ListItem content={item.content}
-                                color={colorSet[index]}
-                                time={item.time || ''}
-                                idx={index}
-                                thisz={this}
-                                onPress={() => {
-                                    this.props.navigation.navigate('Detail', {
-                                        "content": item.content, idx: index, "stas": "update", updateTag: (updateTag) => {
-                                            this.setState({ updateTag: updateTag });
-                                        }
-                                    })
-                                }
-                                }
-                            >
-                            </ListItem>
-                        )}
+                        renderItem={renderItem}
                         keyExtractor={item => item.id}
-                    />
+                    > </FlatList>
                 </View>
                 <TouchableOpacity style={styles.container}
-                    onPress={() => {
-                        this.props.navigation.navigate('Detail', {
-                            "stas": "create", createTag: (createTag) => {
-                                this.setState({ createTag: createTag })
-                            }
-                        })
-                    }}>
+                    onPress={listRowClick}>
                     <Text style={[styles.textStyle, { fontSize: 30 }]}>+</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.audioView}
@@ -118,10 +117,11 @@ export default class ListView extends Component {
                     }}>
                     <Text style={styles.textStyle}>録音</Text>
                 </TouchableOpacity>
-            </>
+            </View >
         )
     }
 }
+
 
 const styles = StyleSheet.create({
     flatView: {

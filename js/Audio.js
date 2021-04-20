@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import Sound from 'react-native-sound';
+import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import {
     AppRegistry,
     StyleSheet,
@@ -9,9 +10,6 @@ import {
     Platform,
     PermissionsAndroid,
 } from 'react-native';
-
-import Sound from 'react-native-sound';
-import { AudioRecorder, AudioUtils } from 'react-native-audio';
 
 class AudioView extends Component {
 

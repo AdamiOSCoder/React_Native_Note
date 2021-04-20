@@ -9,6 +9,7 @@ import DetailsView from "./js/Detail"
 import AudioView from "./js/Audio"
 
 import {
+  Button,
   SafeAreaView,
   StyleSheet
 } from 'react-native';

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Pxwh } from "../tools/Pxwh"
 import {
     TouchableOpacity,
     View,
@@ -12,14 +13,14 @@ import {
     Dimensions
 } from "react-native";
 
-import { Pxwh } from "../tools/Pxwh"
-
-export default function ListItem({ content, color, time, onPress, idx, thisz }) {
+function ListItem({ content, color, time, onPress, idx, thisz }) {
     return (
-        <>
+        <View style={{ flex: 1 }}>
             <TouchableOpacity
                 onPress={onPress} style={[styles.wrapper, { backgroundColor: color }]}>
-                <Text style={styles.content}>{content}</Text>
+                <View>
+                    <Text style={styles.content} numberOfLines={3}>{content}</Text>
+                </View>
             </TouchableOpacity>
             <View style={styles.btnView} >
                 <Button title="削除" onPress={() => {
@@ -28,7 +29,7 @@ export default function ListItem({ content, color, time, onPress, idx, thisz }) 
                 }} />
             </View>
 
-        </>
+        </View>
     )
 }
 
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     },
     content: {
         fontSize: Pxwh(30),
-        paddingRight: 40
+        paddingRight: 40,
     },
     btnView: {
         position: 'absolute',
@@ -58,3 +59,5 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width - 100
     },
 });
+
+export default ListItem;
